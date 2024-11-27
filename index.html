@@ -3,18 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fraction Division Visualizer</title>
+    <title>LiveMath - Fraction Division Visualizer</title>
     <style>
-        body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
-        #controls { position: absolute; top: 10px; left: 10px; background: rgba(255,255,255,0.8); padding: 10px; }
-        canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; }
+        body { 
+            margin: 0; 
+            overflow: hidden; 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #f0f0f0;
+        }
+        #controls { 
+            position: absolute; 
+            top: 20px; 
+            left: 20px; 
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 300px;
+        }
+        canvas { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+        }
+        button {
+            background: #4A90E2;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #357ABD;
+        }
+        .fraction-input {
+            margin: 10px 0;
+        }
+        .fraction-input input {
+            width: 40px;
+            padding: 4px;
+            margin: 0 4px;
+            text-align: center;
+        }
+        #equation {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+        }
+        .explanation {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 15px;
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
     <div id="controls">
         <h2>Dividing Fractions</h2>
-        <p>Visualizing: <span id="equation">2/3 ÷ 1/2</span></p>
+        <p>Current: <span id="equation">2/3 ÷ 1/2</span></p>
+        
+        <div class="fraction-input">
+            <label>First Fraction:</label><br>
+            <input type="number" min="1" max="6" value="2" id="num1"> /
+            <input type="number" min="1" max="6" value="3" id="den1">
+        </div>
+        
+        <div class="fraction-input">
+            <label>Second Fraction:</label><br>
+            <input type="number" min="1" max="6" value="1" id="num2"> /
+            <input type="number" min="1" max="6" value="2" id="den2">
+        </div>
+        
+        <button onclick="updateFractions()">Update Fractions</button>
         <button onclick="resetAnimation()">Reset Animation</button>
+        
+        <div class="explanation">
+            Watch as the second fraction (divisor) flips to demonstrate the "keep, change, flip" method
+            of division. The animation shows why dividing by a fraction is the same as multiplying by its reciprocal.
+        </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/regl/2.1.0/regl.min.js"></script>
     <script src="js/fraction-vis.js"></script>
