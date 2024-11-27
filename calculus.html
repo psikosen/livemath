@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiveMath - Calculus Visualizations</title>
+    <style>
+        /* ... (previous CSS remains the same) ... */
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Calculus Concepts Visualized</h1>
+    </div>
+
+    <nav class="nav-menu">
+        <a href="index.html">Fractions</a>
+        <a href="linear.html">Linear Algebra</a>
+        <a href="calculus.html">Calculus</a>
+    </nav>
+
+    <div class="concept-container">
+        <!-- ... (previous HTML structure remains the same) ... -->
+    </div>
+
+    <!-- Load scripts in correct order -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/regl/2.1.0/regl.min.js"></script>
+    
+    <!-- Load visualizations after regl -->
+    <script src="js/limit-vis.js"></script>
+    <script src="js/derivative-vis.js"></script>
+    <script src="js/integral-vis.js"></script>
+
+    <!-- Initialize everything after DOM is loaded -->
+    <script>
+        window.addEventListener('load', () => {
+            // Initialize sliders
+            const limitSlider = document.getElementById('limit-slider');
+            const derivativeSlider = document.getElementById('derivative-slider');
+            const integralSlider = document.getElementById('integral-slider');
+
+            // Make sure visualizations are properly sized
+            function resizeVisualizations() {
+                const containers = document.querySelectorAll('.vis-container');
+                containers.forEach(container => {
+                    const canvas = container.querySelector('canvas');
+                    if (canvas) {
+                        canvas.width = container.clientWidth;
+                        canvas.height = container.clientHeight;
+                    }
+                });
+            }
+
+            // Handle window resize
+            window.addEventListener('resize', resizeVisualizations);
+            resizeVisualizations();
+        });
+    </script>
+</body>
+</html>
