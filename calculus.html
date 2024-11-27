@@ -4,9 +4,224 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LiveMath - Calculus Visualizations</title>
-    <!-- rest of the HTML content -->
+    <style>
+        :root {
+            --primary-color: #4A90E2;
+            --secondary-color: #34495e;
+            --accent-color: #e74c3c;
+            --background-color: #f5f6fa;
+        }
+        
+        body { 
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--background-color);
+        }
+
+        .header {
+            background: var(--secondary-color);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .nav-menu {
+            background: var(--secondary-color);
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .concept-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .concept-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .concept-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .vis-container {
+            height: 300px;
+            background: #1a1a1a;
+            position: relative;
+        }
+
+        .concept-content {
+            padding: 1.5rem;
+        }
+
+        .concept-title {
+            color: var(--secondary-color);
+            margin: 0 0 1rem 0;
+        }
+
+        .concept-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .controls {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #357ABD;
+        }
+
+        .function-input {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        input[type="range"] {
+            flex: 1;
+        }
+
+        .slider-label {
+            min-width: 60px;
+        }
+    </style>
 </head>
 <body>
-    <!-- body content -->
+    <div class="header">
+        <h1>Calculus Concepts Visualized</h1>
+    </div>
+
+    <nav class="nav-menu">
+        <a href="index.html">Fractions</a>
+        <a href="linear.html">Linear Algebra</a>
+        <a href="calculus.html">Calculus</a>
+        <a href="derivatives.html">Derivatives</a>
+    </nav>
+
+    <div class="concept-container">
+        <!-- Limits Visualization -->
+        <div class="concept-card">
+            <div class="vis-container" id="limits-vis"></div>
+            <div class="concept-content">
+                <h2 class="concept-title">Understanding Limits</h2>
+                <p class="concept-description">
+                    Watch how a function approaches a specific value as x gets closer 
+                    and closer to a point, even if the function isn't defined there.
+                </p>
+                <div class="function-input">
+                    <span class="slider-label">x →</span>
+                    <input type="range" id="limit-slider" min="0" max="100" value="50">
+                </div>
+                <div class="controls">
+                    <button onclick="limitVis.animate()">Animate</button>
+                    <button onclick="limitVis.reset()">Reset</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Derivatives Visualization -->
+        <div class="concept-card">
+            <div class="vis-container" id="derivative-vis"></div>
+            <div class="concept-content">
+                <h2 class="concept-title">Derivatives as Slopes</h2>
+                <p class="concept-description">
+                    See how the derivative represents the instantaneous rate of change
+                    at any point on a curve.
+                </p>
+                <div class="function-input">
+                    <span class="slider-label">Point</span>
+                    <input type="range" id="derivative-slider" min="0" max="100" value="50">
+                </div>
+                <div class="controls">
+                    <button onclick="derivativeVis.showTangent()">Show Tangent</button>
+                    <button onclick="derivativeVis.animate()">Animate</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Integrals Visualization -->
+        <div class="concept-card">
+            <div class="vis-container" id="integral-vis"></div>
+            <div class="concept-content">
+                <h2 class="concept-title">Integration as Area</h2>
+                <p class="concept-description">
+                    Understand how definite integrals calculate the area under a curve
+                    through Riemann sums.
+                </p>
+                <div class="function-input">
+                    <span class="slider-label">Rectangles</span>
+                    <input type="range" id="integral-slider" min="4" max="50" value="10">
+                </div>
+                <div class="controls">
+                    <button onclick="integralVis.addRectangles()">Add Rectangles</button>
+                    <button onclick="integralVis.showArea()">Show Area</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load scripts in correct order -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/regl/2.1.0/regl.min.js"></script>
+    <script src="js/limit-vis.js"></script>
+    <script src="js/derivative-vis.js"></script>
+    <script src="js/integral-vis.js"></script>
+
+    <script>
+        window.addEventListener('load', () => {
+            // Initialize sliders
+            const limitSlider = document.getElementById('limit-slider');
+            const derivativeSlider = document.getElementById('derivative-slider');
+            const integralSlider = document.getElementById('integral-slider');
+
+            // Make sure visualizations are properly sized
+            function resizeVisualizations() {
+                const containers = document.querySelectorAll('.vis-container');
+                containers.forEach(container => {
+                    const canvas = container.querySelector('canvas');
+                    if (canvas) {
+                        canvas.width = container.clientWidth;
+                        canvas.height = container.clientHeight;
+                    }
+                });
+            }
+
+            // Handle window resize
+            window.addEventListener('resize', resizeVisualizations);
+            resizeVisualizations();
+        });
+    </script>
 </body>
 </html>
